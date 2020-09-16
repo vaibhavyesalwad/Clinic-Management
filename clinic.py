@@ -1,3 +1,6 @@
+import datetime
+
+
 class DoctorsData:
     def __init__(self, size):
         self.size = size
@@ -44,9 +47,13 @@ class DoctorsData:
         if did is None and name is None and spl is None:
             print('Not enough enough information to search doctors')
         else:
+            count = 0
             for doc in self.all_data:
                 if doc['id'] == did or doc['name'] == name or doc['spl'] == spl:
                     print(doc['id'], '\t', doc['name'], '\t', doc['spl'], '\t\t', doc['avl'])
+                    count += 1
+            if count == 0:
+                print("No such doctor found")
 
 
 class PatientsData:
@@ -97,7 +104,7 @@ class PatientsData:
         else:
             print('id', '\t', 'name', '\t', 'age', '\t', 'contact', '\t', 'treatment')
             for pat in self.all_data:
-                if pat['id'] == pid or pat['name'] == name or pat['contact'] == contact:
+                if str(pat['id']) == str(pid) or pat['name'] == name or str(pat['contact']) == str(contact):
                     print(pat['id'], '\t', pat['name'], '\t', pat['age'], '\t', pat['contact'], '\t\t', pat['spl'])
 
 
@@ -114,32 +121,39 @@ class Appointments:
 
         for doc in self.docs_data:
             patients = 0
-            day_num = 1
+            date = datetime.datetime.today().date()
             for pat in self.patients_data:
                 if pat['spl'] == doc['spl']:
                     appointments.append({'pid': pat['id'], 'p_name': pat['name'], 'did': doc['id'],
-                                  'd_name': doc['name'],'spl': doc['spl'], 'date': 'day'+ str(day_num)})
+                                  'd_name': doc['name'],'spl': doc['spl'], 'date': date})
                     patients += 1
                     if patients % 5 == 0:
-                        day_num += 1
+                        year = date.year
+                        month = date.month
+                        day = date.day
+                        date = datetime.date(year, month, day +1)
 
         return appointments
 
     def show_appointments(self):
-        print('pid', '\t', 'p_name', '\t', 'did', '\t', 'd_name', '\t', 'date', '\t\t', 'spl')
+        print('pid', '\t', 'patient name', '\t', 'did', '\t', 'doctor name', '\t\t', 'date', '\t\t', 'spl')
         for appointment in self.appointments:
-            print(appointment['pid'], '\t\t', appointment['p_name'], '\t\t', appointment['did'], '\t\t',
-                  appointment['d_name'], '\t\t', appointment['date'], '\t\t', appointment['spl'])
+            print(appointment['pid'], '\t\t', appointment['p_name'], '\t\t\t', appointment['did'], '\t\t',
+                  appointment['d_name'], '\t\t', appointment['date'], '\t\t\t', appointment['spl'])
 
     def find_appointments(self, did=None, pid=None):
         if did is None and pid is None:
             print('not enough information to search appointments')
         else:
-            print('pid', '\t', 'p_name', '\t', 'did', '\t', 'd_name', '\t', 'date', '\t\t', 'spl')
+            print('pid', '\t', 'patient name', '\t', 'did', '\t', 'doctor name', '\t\t', 'date', '\t\t\t', 'spl')
+            count = 0
             for appointment in self.appointments:
-                if appointment['pid'] == pid or appointment['did'] == did:
-                    print(appointment['pid'], '\t\t', appointment['p_name'], '\t\t', appointment['did'], '\t\t',
+                if str(appointment['pid']) == str(pid) or str(appointment['did']) == str(did):
+                    print(appointment['pid'], '\t\t', appointment['p_name'], '\t\t\t', appointment['did'], '\t\t',
                         appointment['d_name'], '\t\t', appointment['date'], '\t\t', appointment['spl'])
+                    count += 1
+            if count == 0:
+                print("No appointment found")
 
     def check_availability(self, did=None, spl=None, date=None):
         if date is None or (did is None and spl is None):
@@ -164,8 +178,9 @@ class Appointments:
         else:
             if self.check_availability(did=did, spl=spl, date=date):
                 for doc in self.docs_data:
-                    if doc['id'] == did or doc['spl'] == spl:
+                    if str(doc['id']) == str(did) or doc['spl'] == spl:
                         d_name = doc['name']
+                        did = doc['id']
                         self.appointments.append({'pid': pid, 'p_name': name, 'did': did,
                                     'd_name': d_name, 'spl': spl, 'date': date})
                         print('appointment booked on', date, 'with Dr', d_name, '('+str(spl)+')')
@@ -176,12 +191,12 @@ class Appointments:
 
 
 docs = DoctorsData(10)
-docs.add_new({'name': 'dr1', 'id': 1, 'spl': 'MD', 'avl': 'AM'})
-docs.add_new({'name': 'dr2', 'id': 2, 'spl': 'MS', 'avl': 'PM'})
-docs.add_new({'name': 'dr3', 'id': 3, 'spl': 'Dermatologist', 'avl': 'AM'})
-docs.add_new({'name': 'dr4', 'id': 4, 'spl': 'Cardiologist', 'avl': 'PM'})
-docs.add_new({'name': 'dr5', 'id': 5, 'spl': 'Orthopedist', 'avl': 'AM'})
-docs.add_new({'name': 'dr6', 'id': 6, 'spl': 'Neurologist', 'avl': 'PM'})
+docs.add_new({'name': 'Shubham', 'id': 1, 'spl': 'MD', 'avl': 'AM'})
+docs.add_new({'name': 'Sanket', 'id': 2, 'spl': 'MS', 'avl': 'PM'})
+docs.add_new({'name': 'Pratik', 'id': 3, 'spl': 'Dermatologist', 'avl': 'AM'})
+docs.add_new({'name': 'Akash', 'id': 4, 'spl': 'Cardiologist', 'avl': 'PM'})
+docs.add_new({'name': 'Shrikant', 'id': 5, 'spl': 'Orthopedist', 'avl': 'AM'})
+docs.add_new({'name': 'Prasad', 'id': 6, 'spl': 'Neurologist', 'avl': 'PM'})
 docs.show_all_docs()
 print(docs.all_data)
 
@@ -237,8 +252,81 @@ docs.find_doctors(spl='MD')
 print()
 pats.find_patients(contact=1234)
 print()
-app.take_appointment(pid=50, spl='MD', contact=1264, date='day3', name='p50')
+app.take_appointment(pid=50, spl='MD', contact=1264, date=datetime.date(2020, 11, 18), name='p50')
 print()
 app.show_appointments()
 print()
 pats.show_all_pats()
+
+while True:
+    print()
+    print("Choose Option:")
+    print("1. Find Doctor")
+    print("2. Check appointment availability of doctor")
+    print("3. Book appointment")
+    print("4. Show all appointments")
+    print("5. Find patient")
+    print("6: EXit")
+
+    option = input("Enter option:")
+
+    if option == '1':
+        print()
+        print("Finding doctor")
+        spl = input("Enter speciality of doctor:")
+        name = input("Enter name of doctor:")
+        did = input("Enter doctor id:")
+        docs.find_doctors(did=did, name=name, spl=spl)
+
+    elif option == '2':
+        print()
+        print('Checking appointment availability of doctor')
+        spl = input("Enter speciality of doctor:")
+        date = input('Enter date in YYYY-MM-DD format:')
+        year, month, day = map(int, date.split('-'))
+        date = datetime.date(year, month, day)
+        if app.check_availability(spl=spl, date=date):
+            print('Appointment available on', date)
+        else:
+            print('Appointment NOT available on', date, 'as doctor has hands full')
+
+    elif option == '3':
+        print()
+        print('Booking an appointment')
+        pid = max([pat['id'] for pat in pats.all_data]) + 1
+        name = input('Enter patient name:')
+        nums = '0123456789'
+        while True:
+            age = input('Age:')
+            if all([ch in nums for ch in age]):
+                break
+        spl = input("Enter speciality of doctor:")
+
+        while True:
+            date = input('Enter date in YYYY-MM-DD format:')
+            if all([ch in nums for part in date.split('-') for ch in part]):
+                break
+
+        year, month, day = map(int, date.split('-'))
+        date = datetime.date(year, month, day)
+        while True:
+            contact = input('Enter mobile number:')
+            if all([ch in nums for ch in contact]):
+                break
+        app.take_appointment(pid=pid, name=name, age=age, spl=spl, date=date, contact=contact)
+
+    elif option == '4':
+        print()
+        print('Showing all booked appointments')
+        app.show_appointments()
+
+    elif option == '5':
+        print()
+        print('Finding patient')
+        name = input('Enter patient name:')
+        pid = input('Enter patient id:')
+        contact = input('Enter mobile number:')
+        pats.find_patients(pid=pid, name=name, contact=contact)
+
+    elif option == '6':
+        break
