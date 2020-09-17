@@ -1,5 +1,6 @@
 import datetime
 
+
 class DoctorsData:
     def __init__(self, size):
         self.size = size
@@ -38,9 +39,9 @@ class DoctorsData:
 
     def show_all_docs(self):
         print('Doctors in staff')
-        print('id', '\t', 'name', '\t', 'spl', '\t\t','avl')
+        print('id', '\t', 'name', '\t\t', 'speciality')
         for doc in self.all_data:
-            print(doc['id'], '\t', doc['name'], '\t', doc['spl'], '\t\t', doc['avl'])
+            print(doc['id'], '\t', doc['name'], '\t', doc['spl'])
 
     def find_doctors(self, did=None, name=None, spl=None):
         if did is None and name is None and spl is None:
@@ -49,7 +50,7 @@ class DoctorsData:
             count = 0
             for doc in self.all_data:
                 if doc['id'] == did or doc['name'] == name or doc['spl'] == spl:
-                    print(doc['id'], '\t', doc['name'], '\t', doc['spl'], '\t\t', doc['avl'])
+                    print(doc['id'], '\t', doc['name'], '\t', doc['spl'])
                     count += 1
             if count == 0:
                 print("No such doctor found")
@@ -135,7 +136,7 @@ class Appointments:
         return appointments
 
     def show_appointments(self):
-        print('pid', '\t', 'patient name', '\t', 'did', '\t', 'doctor name', '\t\t', 'date', '\t\t', 'spl')
+        print('pid', '\t', 'patient name', '\t', 'did', '\t', 'doctor name', '\t\t', 'date', '\t\t\t', 'Speciality')
         for appointment in self.appointments:
             print(appointment['pid'], '\t\t', appointment['p_name'], '\t\t\t', appointment['did'], '\t\t',
                   appointment['d_name'], '\t\t', appointment['date'], '\t\t\t', appointment['spl'])
