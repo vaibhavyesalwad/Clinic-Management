@@ -1,0 +1,32 @@
+[
+      {
+            "name": "Shubham",
+            "id": 1,
+            "spl": "MD"
+      },
+      {
+            "name": "Sanket",
+            "id": 2,
+            "spl": "MS"
+      },
+      {
+            "name": "Pratik",
+            "id": 3,
+            "spl": "Dermatologist"
+      },
+      {
+            "name": "Akash",
+            "id": 4,
+            "spl": "Cardiologist"
+      },
+      {
+            "name": "Shrikant",
+            "id": 5,
+            "spl": "Orthopedist"
+      },
+      {
+            "name": "Prasad",
+            "id": 6,
+            "spl": "Neurologist"
+      }
+]
